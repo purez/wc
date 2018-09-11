@@ -12,11 +12,11 @@ public class ToolBox {
 	
 	public void countChar(File file) {
 		FileReader fileReader = null;
-		int numberOfChars = 0;
+		int numberOfChar = 0;
 		try {
 			fileReader = new FileReader(file);
 			while(fileReader.read() > 1) {
-				numberOfChars++;
+				numberOfChar++;
 			}
 		}catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -33,18 +33,19 @@ public class ToolBox {
 				}
 			}
 		}
-		System.out.println("字符数: "+numberOfChars+"，文件:"+file.getAbsolutePath());
+		System.out.println("字符数: "+numberOfChar+"，文件:"+file.getAbsolutePath());
 	}
 	
 	public void countWord(File file) throws IOException {
-		int numberOfWords = 0;
+		int numberOfWord = 0;
 		try {
 			FileReader fileReader = new FileReader(file); //FileNotFound
 			BufferedReader bufferedReader = new BufferedReader(fileReader); //IO
 			String line = bufferedReader.readLine();
 			while (line != null) {
+				line.replaceAll("[\\p{Nd}\\u4e00-\\uffe5\\p{Punct}\\s]", " ");
 				String[] wordArray = line.split(" ");
-				numberOfWords += wordArray.length;
+				numberOfWord += wordArray.length;
 				line = bufferedReader.readLine();
 			}
 			bufferedReader.close();
@@ -54,46 +55,53 @@ public class ToolBox {
 			e.printStackTrace();
 		}
 	
-		System.out.println("词数: "+numberOfWords+"，文件："+file.getAbsolutePath());
+		System.out.println("词数: "+numberOfWord+"，文件："+file.getAbsolutePath());
 	}
 	public void countLine(File file,String args) throws IOException {
-		int totleNumberOfLines = 0;
-		int numberOfBlankLines = 0;
-		int numberofNoteLine = 0;
-		FileReader fileReader = null;
+		int numberOfAnnotatedLine = 0;
+		int numberOfBlankLine = 0;
+		int numberOfCodeLine = 0;
+		
 		try {
-			fileReader = new FileReader(file);
-			LineNumberReader lineNumberReader = new LineNumberReader(fileReader);
-			String line = lineNumberReader.readLine();
-			while(line != null) {
-				totleNumberOfLines++;
-				if(line.matches("\\s*\\p{Graph}\\s*") || line.equals(""))
-					numberOfBlankLines++;
-				Pattern noteLinePattern = Pattern.compile("\\W.s*//|^//.*$|^/\\*.*\\*/$|^/\\*\\*.*$|^\\*.*$|.*\\*/$");
-				if(noteLinePattern.matcher(line).find())
-					numberofNoteLine++;
-				line = lineNumberReader.readLine();
-			}
-			lineNumberReader.close();
-		}catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			if(null != fileReader)
-				try {
-					fileReader.close();
-				}catch (IOException e) {
-					e.printStackTrace();
-				}
-		}
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+            //br = new BufferedReader(new FileReader(file));
+            boolean comm = false;
+            String line;
+            while((line = bufferedReader.readLine()) != null) {
+                if(comm) {	//是否匹配多行注释
+                	if(line.matches(".*\\*/\\s*")) {
+                		comm = false;
+                	} 
+                numberOfAnnotatedLine++;
+                }else {
+                	if(line.matches("\\s*\\p{Graph}\\s*") || line.matches("\\s+")) { //匹配空白字符行、单字符行
+                		numberOfBlankLine++;
+                	}else if(line.matches("\\s*}?\\s*//.*") || line.matches(".*/\\*.*\\*/.*")) {//单行注释//、/* */
+                		numberOfAnnotatedLine++;
+                	}else if(line.matches(".*/\\*.*")) {//匹配*
+                		comm = true;
+                		numberOfAnnotatedLine++;
+                	}else {
+						numberOfCodeLine++;
+					}
+                }
+            }
+            bufferedReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+		int totleNumberOfLine = numberOfAnnotatedLine + numberOfBlankLine + numberOfCodeLine;
 		if(args.equals("-a")) {
-			int codelines = totleNumberOfLines-numberOfBlankLines-numberofNoteLine;
+			//int codelines = totleNumberOfLines-numberOfBlankLines-numberofNoteLine;
 			System.out.println("文件："+file.getAbsolutePath());
-			System.out.println("空行: "+numberOfBlankLines+", 代码行: "+codelines+", 注释行: "+numberofNoteLine);
+			System.out.println("空行: "+numberOfBlankLine+", 代码行: "+numberOfCodeLine+", 注释行: "+numberOfAnnotatedLine);
 		}
 		else
-			System.out.println("行数： "+totleNumberOfLines+"，文件:"+file.getAbsolutePath());
+			System.out.println("行数： "+totleNumberOfLine+"，文件:"+file.getAbsolutePath());
+		
 	}
 }
