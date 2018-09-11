@@ -24,9 +24,9 @@ public class Test {
   		}
   		
   		if(args[0].equals("-s") || args[1].equals("-s")) {
-  			//String currentPath = Test.class.getResource("").getPath();
+  			//String currentPath = Test.class.getResource("").getPath();//调试用
   			String prefix = args[indexOfPath].substring(args[indexOfPath].lastIndexOf("."));
-  			String currentPath = System.getProperty("user.dir");
+  			String currentPath = System.getProperty("user.dir");//打包用
   			
   			FileFilter fileFilter = new FileFilter() {
 				@Override
@@ -46,11 +46,16 @@ public class Test {
 					}
 				}
 				if(args[0].equals("-w") || args[1].equals("-w")) {
-					for(File file2 : files) {  
+					for(File file2 : files) {
 						toolBox.countWord(file2);
 					}
 				}
 				if(args[0].equals("-l") || args[1].equals("-l")) {
+					for(File file2 : files) {
+						toolBox.countLine(file2, "args".toString());
+					}
+				}
+				if(args[0].equals("-a") || args[1].equals("-a")) {
 					for(File file2 : files) {
 						toolBox.countLine(file2, "-a".toString());
 					}
