@@ -24,9 +24,9 @@ public class Test {
   		}
   		
   		if(args[0].equals("-s") || args[1].equals("-s")) {
-  			//String currentPath = Test.class.getResource("").getPath();
+  			String currentPath = Test.class.getResource("").getPath();
   			String prefix = args[indexOfPath].substring(args[indexOfPath].lastIndexOf("."));
-  			String currentPath = System.getProperty("user.dir");
+  			//String currentPath = System.getProperty("user.dir");
   			
   			FileFilter fileFilter = new FileFilter() {
 				@Override
@@ -39,23 +39,25 @@ public class Test {
 			};
 			
 			File[] files = new File(currentPath).listFiles(fileFilter);
+  			
 			if(files != null) {
-				if(args[0].equals("-c") || args[1].equals("-c")) {
-					for(File file2 : files) {
-						toolBox.countChar(file2);
-					}
-				}
-				if(args[0].equals("-w") || args[1].equals("-w")) {
-					for(File file2 : files) {  
-						toolBox.countWord(file2);
-					}
-				}
-				if(args[0].equals("-l") || args[1].equals("-l")) {
-					for(File file2 : files) {
-						toolBox.countLine(file2, "-a".toString());
-					}
+  			if(args[0].equals("-c") || args[1].equals("-c")) {
+				for(File file2 : files) {
+					toolBox.countChar(file2);
 				}
 			}
+			if(args[0].equals("-w") || args[1].equals("-w")) {
+				for(File file2 : files) { 
+					toolBox.countWord(file2);
+				}
+			}
+			if(args[0].equals("-l") || args[1].equals("-l")) {
+				for(File file2 : files) {
+					toolBox.countLine(file2, "-a".toString());
+				}
+			}}
   		}
+  		
   	}
+	
 }

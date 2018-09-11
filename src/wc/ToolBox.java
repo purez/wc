@@ -45,7 +45,7 @@ public class ToolBox {
 			while (line != null) {
 				String[] wordArray = line.split(" ");
 				numberOfWords += wordArray.length;
-				line = bufferedReader.readLine();   //!!!不会自动de,如果此句放到while里就不用
+				line = bufferedReader.readLine();
 			}
 			bufferedReader.close();
 		}catch (FileNotFoundException e) {
@@ -69,15 +69,10 @@ public class ToolBox {
 				totleNumberOfLines++;
 				if(line.matches("\\s*\\p{Graph}\\s*") || line.equals(""))
 					numberOfBlankLines++;
-				String regex = "[^]";
-				//Pattern noteLinePattern = Pattern.compile("(regrex)+");
 				Pattern noteLinePattern = Pattern.compile("\\W.s*//|^//.*$|^/\\*.*\\*/$|^/\\*\\*.*$|^\\*.*$|.*\\*/$");
-				//Pattern noteLinePattern = Pattern.compile("((\\W.s*//)|(/\\*+)|((^\\s)*\\*)|((^\\s)*\\*+/))+");
 				if(noteLinePattern.matcher(line).find())
 					numberofNoteLine++;
-				//if(line.matches(regex))
-					
-				line = lineNumberReader.readLine();                //都一起算了
+				line = lineNumberReader.readLine();
 			}
 			lineNumberReader.close();
 		}catch (FileNotFoundException e) {
@@ -94,10 +89,9 @@ public class ToolBox {
 				}
 		}
 		if(args.equals("-a")) {
+			int codelines = totleNumberOfLines-numberOfBlankLines-numberofNoteLine;
 			System.out.println("文件："+file.getAbsolutePath());
-			System.out.println("空行: "+numberOfBlankLines);
-			System.out.println("代码行: "+(totleNumberOfLines-numberOfBlankLines-numberofNoteLine));
-			System.out.println("注释行: "+numberofNoteLine);
+			System.out.println("空行: "+numberOfBlankLines+", 代码行: "+codelines+", 注释行: "+numberofNoteLine);
 		}
 		else
 			System.out.println("行数： "+totleNumberOfLines+"，文件:"+file.getAbsolutePath());
