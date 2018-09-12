@@ -65,7 +65,6 @@ public class ToolBox {
 		try {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-            //br = new BufferedReader(new FileReader(file));
             boolean comm = false;
             String line;
             while((line = bufferedReader.readLine()) != null) {
@@ -96,7 +95,6 @@ public class ToolBox {
 		
 		int totleNumberOfLine = numberOfAnnotatedLine + numberOfBlankLine + numberOfCodeLine;
 		if(args.equals("-a")) {
-			//int codelines = totleNumberOfLines-numberOfBlankLines-numberofNoteLine;
 			System.out.println("文件："+file.getAbsolutePath());
 			System.out.println("空行: "+numberOfBlankLine+", 代码行: "+numberOfCodeLine+", 注释行: "+numberOfAnnotatedLine);
 		}

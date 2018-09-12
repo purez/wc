@@ -24,9 +24,9 @@ public class Test {
   		}
   		
   		if(args[0].equals("-s") || args[1].equals("-s")) {
-  			String currentPath = Test.class.getResource("").getPath();//调试用
+  			//String currentPath = Test.class.getResource("").getPath();//调试用
   			String prefix = args[indexOfPath].substring(args[indexOfPath].lastIndexOf("."));
-  			//String currentPath = System.getProperty("user.dir");//打包用
+  			String currentPath = System.getProperty("user.dir");//打包用
   			
   			FileFilter fileFilter = new FileFilter() {
 				@Override
