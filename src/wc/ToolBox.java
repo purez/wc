@@ -65,12 +65,12 @@ public class ToolBox {
 		try {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-            boolean comm = false;
+            boolean flag = false;
             String line;
             while((line = bufferedReader.readLine()) != null) {
-                if(comm) {	//是否匹配多行注释
+                if(flag) {	//是否匹配多行注释
                 	if(line.matches(".*\\*/\\s*")) {
-                		comm = false;
+                		flag = false;
                 	} 
                 numberOfAnnotatedLine++;
                 }else {
@@ -79,7 +79,7 @@ public class ToolBox {
                 	}else if(line.matches("\\s*}?\\s*//.*") || line.matches(".*/\\*.*\\*/.*")) {//单行注释//、/* */
                 		numberOfAnnotatedLine++;
                 	}else if(line.matches(".*/\\*.*")) {//匹配*
-                		comm = true;
+                		flag = true;
                 		numberOfAnnotatedLine++;
                 	}else {
 						numberOfCodeLine++;

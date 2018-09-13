@@ -47,12 +47,12 @@
  + 统计行数
 
  ```Java
- boolean comm = false;
+ boolean flag = false;
  String line;
  while((line = bufferedReader.readLine()) != null) {
-    	if(comm) {	//是否匹配多行注释
+    	if(flag) {	//是否匹配多行注释
         	if(line.matches(".*\\*/\\s*")) {
-            	comm = false;
+            	flag = false;
             } 
          	numberOfAnnotatedLine++;
         }else {
@@ -61,7 +61,7 @@
             }else if(line.matches("\\s*}?\\s*//.*") || line.matches(".*/\\*.*\\*/.*")) {//单行注释//、/* */
                 numberOfAnnotatedLine++;
             }else if(line.matches(".*/\\*.*")) {//匹配*
-                comm = true;
+                flag = true;
                 numberOfAnnotatedLine++;
             }else {
 				numberOfCodeLine++;
@@ -111,8 +111,6 @@ File[] files = new File(currentPath).listFiles(fileFilter);//获取目录下所�
 
 ## 代码覆盖率
 ![coverage](/home/lixia1855/Pictures/Screenshot from 2018-09-11 17-51-16.png)
-	
-`ToolBox`类中有较多的`try-catch`语句未被执行
 
 ## PSP表格
 
